@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('foodlistApp')
-  .controller('MainCtrl', ['$scope', '$firebaseSimpleLogin', 'ItemListService', function ($scope, $firebaseSimpleLogin, itemListService) {
+  .controller('MainCtrl', ['$scope', '$firebaseSimpleLogin', 'listMetaService', 'itemListService', function ($scope, $firebaseSimpleLogin, listMetaService, itemListService) {
     var firebase = new Firebase('https://foodlist.firebaseio.com/');
-    
+
+    $scope.meta = listMetaService;
     $scope.items = itemListService;
     $scope.userCreds = {};
     $scope.signinButtonText = 'Sign In';
@@ -24,17 +25,17 @@ angular.module('foodlistApp')
       $scope.auth.$login('password', {
         email: $scope.userCreds.email,
         password: $scope.userCreds.password
-      }).then(function(user) {
-        console.log(user);
+      }).then(function() {
         $scope.auth.$getCurrentUser();
         $scope.userCreds = {};
         $scope.signinButtonText = 'Sign In';
       }, function(error) {
-        console.log(error);
+        console.log('Firebase SimpleLogin Error: ', error);
         $scope.signinButtonText = 'Sign In';
+        $scope.authError = error.message.toString().replace(/firebasesimplelogin\:/ig, '');
       });
 
-      $scope.signinButtonText = 'Authenticating...';
+      $scope.signinButtonText = 'Signing in...';
     };
 
     $scope.signOut = function() {
@@ -44,16 +45,17 @@ angular.module('foodlistApp')
     $scope.addItem = function() {
       $scope.items.$add({
         food: $scope.item.food,
-        name: $scope.auth.user.email
+        name: $scope.item.name,
+        owner: $scope.auth.user.email
       }).then(function(ref) {
         console.log(ref);
       });
       
       $scope.item.food = '';
+      $scope.item.name = '';
     };
 
     $scope.removeItem = function(item) {
-      // console.log(item.$id);
       $scope.items.$remove(item.$id);
     };
   }]);

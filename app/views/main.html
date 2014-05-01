@@ -1,74 +1,105 @@
 <div class="container-fluid">
-  <nav class="user-info navbar navbar-default" role="navigation" ng-if="auth.user">
-    <div class="pull-right">
-      <p class="navbar-text"><strong>Signed in as:</strong> {{auth.user.email}}</p>
+  
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+      <strong class="navbar-brand">FoodList</strong>
+      <p class="navbar-text">See who's bringing what</p>
+    </div>
+    <div class="user-info" ng-if="auth.user">
+      {{auth.user.email}}
       <button class="navbar-btn btn btn-warning" ng-click="signOut()">sign out</button>
     </div>
   </nav>
-
-  <div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-      
-      <div class="login" ng-if="!auth.user">
-        <h2>Sign in to add to the list</h2>
-        <form class="form-horizontal" role="form" ng-submit="signIn()">
-          <div class="form-group">
-            <label for="inputName" class="col-sm-2 control-label">Email</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputName" ng-model="userCreds.email">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputItem" class="col-sm-2 control-label">Password</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="inputItem" ng-model="userCreds.password">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-2 pull-right">
-              <button type="submit" class="btn btn-primary">{{signinButtonText}}</button>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <div class="add-item" ng-model="item" ng-if="auth.user">
-        <h2>Add your Item to the List</h2>
-        <form class="form" name="addFoodForm" role="form" ng-submit="addItem()">
-          <div class="row form-group">
-            <div class="col-sm-12">
-              <input type="text" class="form-control" id="inputItem" ng-model="item.food" placeholder="What are you bringing?" required>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col-sm-4 pull-right">
-              <button type="submit" class="btn btn-primary pull-right" ng-disabled="addFoodForm.$invalid">Add My Item</button>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>What They're Bringing</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="item in items | orderByPriority">
-            <td>{{item.name}}</td>
-            <td>{{item.food}}</td>
-            <td>
-              <button class="btn btn-danger" ng-if="item.name === auth.user.email" ng-click="removeItem(item)">
-                <span class="delete-icon glyphicon glyphicon-trash"></span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  
+  <div class="content-container">
     
-    </div><!-- .col-sm... -->
-  </div><!-- .row -->
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h2 class="panel-title">Meal Date</h2>
+          </div>
+          <div class="panel-body">
+            <p>{{meta.date}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h2 class="panel-title">Meal Theme</h2>
+          </div>
+          <div class="panel-body">
+            <p>{{meta.theme}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <table class="item-list table table-striped">
+      <thead>
+        <tr>
+          <th>Who</th>
+          <th>What</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-if="items.$getIndex().length === 0">
+          <td colspan="3" style="text-align: center"><em>No one's signed up to bring anything yet</em></td>
+        </tr>
+        <tr ng-repeat="item in items | orderByPriority">
+          <td>{{item.name}}</td>
+          <td>{{item.food}}</td>
+          <td>
+            <button class="btn btn-danger" ng-if="auth.user && item.owner === auth.user.email" ng-click="removeItem(item)">
+              <span class="delete-icon glyphicon glyphicon-trash"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      
+    </table>
+
+    <div class="login jumbotron" ng-if="!auth.user">
+      <h4 class="jumbotron-heading">Sign In to Add to the List</h4>
+      <div class="alert alert-danger" ng-if="authError">
+        {{authError}}
+      </div>
+      <form class="form" role="form" ng-submit="signIn()">
+        <div class="form-group">
+          <label for="inputName" class="ie-show">Email</label>
+          <input type="email" class="form-control" id="inputName" ng-model="userCreds.email" placeholder="email">
+        </div>
+        <div class="form-group">
+          <label for="inputItem" class="ie-show">Password</label>
+          <input type="password" class="form-control" id="inputPassword" ng-model="userCreds.password" placeholder="password">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary pull-right">{{signinButtonText}}</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="add-item jumbotron" ng-model="item" ng-if="auth.user">
+      <h4 class="jumbotron-heading">Add Your Item to the List</h4>
+      <form class="form" name="addFoodForm" role="form" ng-submit="addItem()">
+        <div class="form-group">
+          <label for="" class="ie-show">Your Name</label>
+          <input type="text" class="form-control" id="inputName" ng-model="item.name" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="inputFood" class="ie-show">What You're Bringing</label>
+          <input type="text" class="form-control" id="inputFood" ng-model="item.food" placeholder="what you're bringing" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary pull-right" ng-disabled="addFoodForm.$invalid">Add My Item</button>
+        </div>
+      </form>
+    </div>
+
+    <em>If you're having problems<span ng-if="!auth.user"> or need an account</span>, <a target="_blank" href="mailto:mklickman1@gmail.com">please let me know.</a></em>
+
+  </div><!-- .content-container -->
 
 </div><!-- .container-fluid -->

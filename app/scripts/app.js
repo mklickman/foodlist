@@ -16,4 +16,8 @@ angular.module('foodlistApp', [
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .run(function() {
+    FastClick.attach(document.body);
+  })
+;

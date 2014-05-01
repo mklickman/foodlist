@@ -2,6 +2,10 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
+// * {
+//   box-shadow: 0 0 0 1px red;
+// }
+
 .browsehappy {
 	margin: 0.2em 0;
 	background: #ccc;
@@ -14,8 +18,36 @@ body {
 	padding-bottom: 20px;
 }
 
+.jumbotron {
+  border-radius: 5px;
+  padding-top: 20px;
+  padding-bottom: 55px;
+
+  .jumbotron-heading {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  &.add-item {
+    color: #3C763D;
+    background: #DFF0D8;
+  }
+}
+
+.ie-show {
+  display: none;
+
+  html.lte-ie9 & {
+    display: block;
+  }
+}
+
 .row {
-	width: 100%;
+
+  @media all and (max-width: 767px) {
+  	margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .navbar {
@@ -23,9 +55,29 @@ body {
 }
 
 .user-info {
+  text-align: center;
 	padding-right: 10px;
+
+  button {
+    margin-left: 10px;
+  }
+
+  @media all and (min-width: 768px) {
+    text-align: right;
+  }
 }
 
 table {
 	width: 100%;
+}
+
+.content-container {
+  padding: 0 10px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.item-list {
+  background: #f8f8f8;
+  margin: 20px 0 40px;
 }
