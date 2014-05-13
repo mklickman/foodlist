@@ -80,4 +80,8 @@ table {
 .item-list {
   background: #f8f8f8;
   margin: 20px 0 40px;
+
+  .table > tbody > tr> td {
+    vertical-align: middle;
+  }
 }

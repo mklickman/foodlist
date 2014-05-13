@@ -49,8 +49,8 @@
           <td colspan="3" style="text-align: center"><em>No one's signed up to bring anything yet</em></td>
         </tr>
         <tr ng-repeat="item in items | orderByPriority">
-          <td>{{item.name}}</td>
-          <td>{{item.food}}</td>
+          <td style="vertical-align: middle">{{item.name}}</td>
+          <td style="vertical-align: middle">{{item.food}}</td>
           <td>
             <button class="btn btn-danger" ng-if="auth.user && item.owner === auth.user.email" ng-click="removeItem(item)">
               <span class="delete-icon glyphicon glyphicon-trash"></span>
@@ -98,7 +98,7 @@
       </form>
     </div>
 
-    <em>If you're having problems<span ng-if="!auth.user"> or need an account</span>, <a target="_blank" href="mailto:mklickman1@gmail.com">please let me know.</a></em>
+    <em>If you're having problems<span ng-if="!auth.user">&nbsp;or need an account</span>, <a target="_blank" href="mailto:mklickman1@gmail.com">please let me know.</a></em>
 
   </div><!-- .content-container -->
 

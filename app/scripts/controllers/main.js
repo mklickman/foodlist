@@ -29,6 +29,7 @@ angular.module('foodlistApp')
         $scope.auth.$getCurrentUser();
         $scope.userCreds = {};
         $scope.signinButtonText = 'Sign In';
+        $scope.authError = '';
       }, function(error) {
         console.log('Firebase SimpleLogin Error: ', error);
         $scope.signinButtonText = 'Sign In';
