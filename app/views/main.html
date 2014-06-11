@@ -20,6 +20,7 @@
             <h2 class="panel-title">Meal Date</h2>
           </div>
           <div class="panel-body">
+            <p ng-if="!meta.date">Loading...</p>
             <p>{{meta.date}}</p>
           </div>
         </div>
@@ -30,6 +31,7 @@
             <h2 class="panel-title">Meal Theme</h2>
           </div>
           <div class="panel-body">
+            <p ng-if="!meta.theme">Loading...</p>
             <p><strong>{{meta.theme}}<span ng-if="meta.suggestions">:</span></strong></p>
             <ul ng-if="meta.suggestions">
               <li ng-repeat="s in meta.suggestions">{{s}}</li>
@@ -48,7 +50,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-if="items.$getIndex().length === 0">
+        <tr ng-if="items && items.$getIndex().length === 0">
           <td colspan="3" style="text-align: center"><em>No one's signed up to bring anything yet</em></td>
         </tr>
         <tr ng-repeat="item in items | orderByPriority">
