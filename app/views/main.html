@@ -30,7 +30,10 @@
             <h2 class="panel-title">Meal Theme</h2>
           </div>
           <div class="panel-body">
-            <p>{{meta.theme}}</p>
+            <p><strong>{{meta.theme}}<span ng-if="meta.suggestions">:</span></strong></p>
+            <ul ng-if="meta.suggestions">
+              <li ng-repeat="s in meta.suggestions">{{s}}</li>
+            </ul>
           </div>
         </div>
       </div>
